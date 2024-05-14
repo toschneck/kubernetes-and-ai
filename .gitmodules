@@ -1,0 +1,18 @@
+[submodule "git-submodules/kf-helm"]
+	path = git-submodules/kf-helm
+	url = git@github.com:akash-gautam/kf-helm.git
+[submodule "git-submodules/deployKF"]
+	path = git-submodules/deployKF
+	url = git@github.com:deployKF/deployKF.git
+[submodule "git-submodules/nutanix-kubeflow-manifests"]
+	path = git-submodules/nutanix-kubeflow-manifests
+	url = git@github.com:nutanix/kubeflow-manifests.git
+[submodule "git-submodules/kubermatic"]
+	path = git-submodules/kubermatic
+	url = git@github.com:kubermatic/kubermatic.git
+[submodule "git-submodules/localai"]
+	path = git-submodules/localai
+	url = git@github.com:mudler/LocalAI.git
+[submodule "git-submodules/localai-helm"]
+	path = git-submodules/localai-helm
+	url = git@github.com:go-skynet/helm-charts.git

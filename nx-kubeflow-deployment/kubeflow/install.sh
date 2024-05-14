@@ -1,4 +1,4 @@
-#!/bin/bash
+e#!/bin/bash
 
 KF_VERSION=v1.8.0
 

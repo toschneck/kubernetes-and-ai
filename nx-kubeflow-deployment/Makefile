@@ -8,6 +8,8 @@ install-nx-kubeflow:
 #install-vanilla-kubeflow:
 #	$(info Installing vanilla kubeflow...)
 #	cd kubeflow; ./install.sh -v
+apply-nx-kubeflow-ingress-patch:
+	kubectl apply -f kubeflow/ingress
 
 install-minio:
 	helm upgrade --install --create-namespace -n minio minio ../git-submodules/kubermatic/charts/minio/ -f minio/values.yaml
