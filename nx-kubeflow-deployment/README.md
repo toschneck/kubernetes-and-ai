@@ -1,5 +1,19 @@
 # Kubeflow Deployment on KKP
 
+
+* Tested with the envrionment
+  * KKP `v2.24.8`
+  * Kubernetes Version `v1.26.13`, Cilium with iptables
+  * GPU Machines [machine-deployment.gpu.export.yaml] 
+* Adjusted Config
+  * Use KKP Minio (check gitsubmodule)
+  * Deploy [nvidia GPU Operator Application](https://github.com/kubermatic/kubermatic/blob/release/v2.25/pkg/ee/default-application-catalog/applicationdefinitions/nvidia-gpu-operator-app.yaml)
+    * modified for KKP 2.24 [demo-app/kkp/nvidia-gpu-operator-app.yaml](../demo-app/kkp/nvidia-gpu-operator-app.yaml)
+  * Node Selector / Taint for Job
+    * Label: `type: gpu`
+    * Taint: `workload:gpu`
+
+Get Node Overview GPU
 ----
 ## Based on https://github.com/nutanix/kubeflow-manifests
 

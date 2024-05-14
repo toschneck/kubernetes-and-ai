@@ -1,0 +1,31 @@
+# Copyright 2020 The Kubermatic Kubernetes Platform contributors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+minio:
+  # These settings are required. Keys must be alphanumeric.
+  credentials:
+    accessKey: "hMkVjhZ0pJkEDZDMFkcAh2wXlGzfu7yK" # 32 byte long
+    secretKey: "MVZ2EynQYwAHGE2YKruKMa33qAUUuf3RrJ9XT7+cNFBC/ZT//JbZdzqKqkaGif6e" # 64 byte long
+
+    # When set to true, a Secret will be created in the given namespace.
+    # Kubermatic requires an "kubermatic-s3-credentials" Secret in the kube-system
+    # namespace to perform usercluster etcd snapshots, _if_ the default
+    # backup containers are used (see KubermaticConfiguration).
+    # Otherwise, this can be disabled for example by setting
+    # `--set "minio.credentials.secret=null"` when running Helm.
+    secret:
+      name: kubermatic-s3-credentials
+      namespace: kube-system
+  backup:
+    enabled: false
