@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-ui
+spec:
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline-ui
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: ml-pipeline-ui-configmap
+      containers:
+        - name: ml-pipeline-ui
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: accesskey
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: secretkey
+            - name: AWS_S3_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: pipeline-install-config
+                  key: objStoreHost
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: pipeline-install-config
+                  key: objStoreRegion
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline
+spec:
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline
+    spec:
+      containers:
+        - env:
+            - name: OBJECTSTORECONFIG_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: pipeline-install-config
+                  key: objStoreHost
+            - name: OBJECTSTORECONFIG_BUCKETNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: pipeline-install-config
+                  key: bucketName
+            - name: OBJECTSTORECONFIG_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: pipeline-install-config
+                  key: objStoreRegion
+            - name: OBJECTSTORECONFIG_PORT
+              value: ""
+          name: ml-pipeline-api-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadata-writer
+spec:
+  template:
+    metadata:
+      labels:
+        app: metadata-writer
+    spec:
+      containers:
+      - name: main
+        env:
+        - name: OBJECT_STORE_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: pipeline-install-config
+              key: objStoreHost
+        - name: OBJECT_STORE_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: pipeline-install-config
+              key: bucketName
+        - name: S3_COMPATIBLE_OBJECT_STORE
+          value: "true"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeflow-pipelines-profile-controller
+spec:
+  template:
+    spec:
+      containers:
+      - name: profile-controller
+        env:
+        - name: MINIO_SERVICE_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: pipeline-install-config
+              key: objStoreRegion
+        - name: MINIO_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: pipeline-install-config
+              key: objStoreHost
+        - name: FRONTEND_TAG
+          value: 2.0.3
+        - name: FRONTEND_IMAGE
+          value: quay.io/ajaynagar/kubeflow-ntnx/kfp-frontend

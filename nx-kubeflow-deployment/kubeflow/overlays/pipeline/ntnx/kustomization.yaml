@@ -1,0 +1,75 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+
+bases:
+  - ../../base/installs/multi-user
+  - ../../base/metadata/base
+  - ../../base/metadata/options/istio
+  - ../../third-party/argo/installs/cluster
+  - ../../third-party/mysql/base
+  - ../../third-party/mysql/options/istio
+  - ../../third-party/metacontroller/base
+
+generatorOptions:
+  # mlpipeline-minio-artifact needs to be referred by exact name
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: pipeline-install-config
+  env: pipeline-install-config.env
+  behavior: merge
+- name: workflow-controller-configmap
+  behavior: replace
+  files:
+  - config
+- name: ml-pipeline-ui-configmap
+  behavior: replace
+  files:
+  - viewer-pod-template.json
+- name: kubeflow-pipelines-profile-controller-code
+  behavior: replace
+  files:
+  - sync.py
+
+secretGenerator:
+- name: mlpipeline-minio-artifact
+  env: object-store-secrets.env
+
+patchesStrategicMerge:
+- ntnx-config-patch.yaml
+
+# Identifier for application manager to apply ownerReference.
+# The ownerReference ensures the resources get garbage collected
+# when application is deleted.
+commonLabels:
+  application-crd-id: kubeflow-pipelines
+
+vars:
+- name: kfp-artifact-storage-endpoint
+  objref:
+    kind: ConfigMap
+    name: pipeline-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.objStoreHost
+- name: kfp-artifact-storage-insecure
+  objref:
+    kind: ConfigMap
+    name: pipeline-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.insecure
+
+images:
+  - name: gcr.io/ml-pipeline/api-server
+    newName: quay.io/ajaynagar/kubeflow-ntnx/kfp-backend
+    newTag: 2.0.3
+
+  - name: gcr.io/ml-pipeline/frontend
+    newName: quay.io/ajaynagar/kubeflow-ntnx/kfp-frontend
+    newTag: 2.0.3
+
+  - name: gcr.io/ml-pipeline/metadata-writer
+    newName: quay.io/ajaynagar/kubeflow-ntnx/kfp-metadata-writer
+    newTag: 2.0.3
