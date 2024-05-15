@@ -4,18 +4,28 @@
 * Tested with the envrionment
   * KKP `v2.24.8`
   * Kubernetes Version `v1.26.13`, Cilium with iptables
-  * GPU Machines [machine-deployment.gpu.export.yaml](demo-app/kkp/usercluster-machindeployment-ref/machine-deployment.gpu.export.yaml) 
+  * GPU Machines [machine-deployment.gpu.export.yaml](../demo-app/kkp/usercluster-machindeployment-ref/machine-deployment.gpu.export.yaml) 
 * Adjusted Config
   * Use KKP Minio (check gitsubmodule)
   * Deploy Applications
     * [nvidia GPU Operator Application](https://github.com/kubermatic/kubermatic/blob/release/v2.25/pkg/ee/default-application-catalog/applicationdefinitions/nvidia-gpu-operator-app.yaml)
       * modified for KKP 2.24 [nvidia-gpu-operator-app.yaml](../demo-app/kkp/application-catalog/nvidia-gpu-operator-app.yaml)
-    * external-dns for DNS management [](../demo-app/kkp/application-catalog) 
+    * external-dns for DNS management [demo-app/kkp/application-catalog](../demo-app/kkp/application-catalog)
   * Node Selector / Taint for Job
     * Label: `type: gpu`
     * Taint: `workload:gpu`
 
+### Login
+* via https://kubeflow-kcd.demo.kubermatic.io (incognito window maybe needed due to certs)
+  * user `user@example.com`
+  * password `admin`
+
+## Notes
+
 Get Node Overview GPU
+```
+kubectl get node --label-columns type,nvidia.com/gpu.product
+```
 ----
 ## Based on https://github.com/nutanix/kubeflow-manifests
 
