@@ -1,0 +1,15 @@
+provider: aws
+triggerLoopOnEvent: true
+env:
+  - name: AWS_DEFAULT_REGION
+    value: eu-central-1
+  - name: AWS_SHARED_CREDENTIALS_FILE
+    value: /.aws/credentials
+secretConfiguration:
+  enabled: true
+  mountPath: /.aws
+  data:
+    credentials: |-
+      [default]
+      aws_access_key_id: xxxxx
+      aws_secret_access_key: xxxx

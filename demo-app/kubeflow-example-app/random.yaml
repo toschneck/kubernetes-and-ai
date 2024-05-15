@@ -4,7 +4,7 @@ kind: Experiment
 metadata:
   #namespace: kubeflow
   namespace: kubeflow-user-example-com
-  name: random
+  name: random-gpu
 spec:
   objective:
     type: minimize
@@ -48,7 +48,9 @@ spec:
               type: gpu
             tolerations:
               - key: workload
-                value: gpu
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
             containers:
               - name: training-container
                 image: docker.io/kubeflowkatib/pytorch-mnist-cpu:latest
