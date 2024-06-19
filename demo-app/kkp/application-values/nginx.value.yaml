@@ -1,0 +1,12 @@
+controller:
+  replicaCount: 3
+  config:
+    proxy-body-size: "0"
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+  - key: workload
+    operator: "Equal"
+    value: "gpu"
+    effect: "NoSchedule"

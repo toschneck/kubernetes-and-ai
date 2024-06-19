@@ -4,7 +4,7 @@ kind: Experiment
 metadata:
   #namespace: kubeflow
   namespace: kubeflow-user-example-com
-  name: random-kcd-demo-2024
+  name: random-cl-demo-2024-x1
 spec:
   objective:
     type: minimize
