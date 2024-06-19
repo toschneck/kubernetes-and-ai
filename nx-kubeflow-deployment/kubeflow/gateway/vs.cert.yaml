@@ -1,0 +1,23 @@
+  apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    labels:
+      app: cm-acme-http
+    name: cm-acme-http
+    namespace: istio-system
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: cm-acme-http-solver-znh82.istio-system.svc.cluster.local
+          port:
+            number: 8089

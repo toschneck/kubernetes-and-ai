@@ -16,9 +16,22 @@
     * Taint: `workload:gpu`
 
 ### Login
-* via https://kubeflow-kcd.demo.kubermatic.io (incognito window maybe needed due to certs)
+
+#### KubeFlow
+* via https://kubeflow-XXX.demo.kubermatic.io (incognito window maybe needed due to certs)
+* or via http://localhost:8080:
+  ```
+  kubectl port-forward svc/istio-ingressgateway -n istio-system 8080:80
+  ```
+* Configured Dex user [`dex.config.yaml`](./kubeflow/auth/dex.config.yaml)
   * user `user@example.com`
   * password `admin`
+
+#### LocalAI
+via http://localhost:18080:
+```
+kubectl port-forward -n localai svc/localai-local-ai 18080:80
+```
 
 ## Notes
 

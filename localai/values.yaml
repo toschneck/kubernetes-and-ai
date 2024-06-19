@@ -6,7 +6,7 @@ persistence:
     annotations: {}
     storageClass: ""
     accessModes: ReadWriteOnce
-    size: 25Gi
+    size: 100Gi
     globalMount: /models
   output:
     enabled: true
@@ -39,6 +39,7 @@ ingress:
     #kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod-nginx"
+    #cert-manager.io/cluster-issuer: "letsencrypt-staging-nginx"
     #external-dns.alpha.kubernetes.io/hostname: localai-cl.demo.kubermatic.io
   hosts:
     - host: localai.cloudland.demo.kubermatic.io

@@ -15,7 +15,11 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: nginx
+            ingressClassName: istio
+            podTemplate:
+              metadata:
+                annotations:
+                  sidecar.istio.io/inject: "true"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -34,4 +38,9 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: nginx
+            ingressClassName: istio
+            podTemplate:
+              metadata:
+                annotations:
+                  sidecar.istio.io/inject: "true"
+

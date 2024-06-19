@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubeflow-demo-ingress-cert
+  namespace: istio-system
+  annotations:
+    kubernetes.io/ingress.class: istio
+spec:
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: letsencrypt-staging
+  secretName: kubeflow-demo-ingress-cert
+  commonName: kubeflow-kcd.demo.kubermatic.io
+  dnsNames:
+    - kubeflow-kcd.demo.kubermatic.io
+  ####
+  #commonName: istio-ingressgateway.istio-system.svc
+  #ipAddresses:
+  #  - <ISTIO_INGRESSGATEWAY_IP_ADDRESS: x.x.x.x>
+  #isCA: true
+  #issuerRef:
+  #  kind: ClusterIssuer
+  #  name: kubeflow-self-signing-issuer
+  #secretName: istio-ingressgateway-certs
