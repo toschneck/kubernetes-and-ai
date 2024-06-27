@@ -4,7 +4,7 @@ kind: Experiment
 metadata:
   #namespace: kubeflow
   namespace: kubeflow-user-example-com
-  name: random-cloudland-demo-2024
+  name: mlcon-random-demo-2024-test
 spec:
   objective:
     type: minimize
@@ -12,7 +12,7 @@ spec:
     objectiveMetricName: loss
   algorithm:
     algorithmName: random
-  parallelTrialCount: 1
+  parallelTrialCount: 3
   maxTrialCount: 3
   maxFailedTrialCount: 3
   parameters:
@@ -66,3 +66,30 @@ spec:
                     memory: "1Gi"
                     cpu: "0.5"
             restartPolicy: Never
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: "nvidia.com/gpu.product"
+                          operator: Exists
+              podAntiAffinity:
+                #ensure to be on another node as localai to ensure performance of GPU
+                requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/instance
+                        operator: In
+                        values:
+                          - localai
+                  topologyKey: kubernetes.io/hostname
+#                preferredDuringSchedulingIgnoredDuringExecution:
+#                - weight: 100
+#                  podAffinityTerm:
+#                    labelSelector:
+#                        matchExpressions:
+#                        - key: app.kubernetes.io/instance
+#                          operator: In
+#                          values:
+#                          - localai
+#                    topologyKey: kubernetes.io/hostname

@@ -18,7 +18,10 @@ persistence:
 
 deployment:
   image:
-    tag: v2.17.0-aio-gpu-nvidia-cuda-12
+    # https://localai.io/basics/container/
+    #Images containing the aio tag are all-in-one images with all the features enabled, and come with an opinionated set of configuration.
+    #tag: latest-aio-gpu-nvidia-cuda-12
+    tag: v2.17.1-aio-gpu-nvidia-cuda-12
     #tag: v2.15.0-aio-gpu-nvidia-cuda-12
 
 
@@ -42,20 +45,29 @@ ingress:
     #cert-manager.io/cluster-issuer: "letsencrypt-staging-nginx"
     #external-dns.alpha.kubernetes.io/hostname: localai-cl.demo.kubermatic.io
   hosts:
-    - host: localai.cloudland.demo.kubermatic.io
+    - host: mlcon.localai.demo.kubermatic.io
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - secretName: local-ai-tls
       hosts:
-      - localai.cloudland.demo.kubermatic.io
+      - mlcon.localai.demo.kubermatic.io
 
-nodeSelector:
-  type: gpu
-
+# schedule only on GPU nodes
+#nodeSelector:
+#  type: gpu
 tolerations:
   - key: workload
     operator: "Equal"
     value: "gpu"
     effect: "NoSchedule"
+
+# Ensures that the nvidia driver is ready
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+     nodeSelectorTerms:
+     - matchExpressions:
+       - key: "nvidia.com/gpu.product"
+         operator: Exists
