@@ -1,0 +1,327 @@
+apiVersion: v1
+items:
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"name":"dex","namespace":"auth"},"spec":{"gateways":["kubeflow/kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/dex/"}}],"route":[{"destination":{"host":"dex.auth.svc.cluster.local","port":{"number":5556}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:25Z"
+    generation: 1
+    name: dex
+    namespace: auth
+    resourceVersion: "57730"
+    uid: bfc56540-edea-4067-91ad-82d01a3a9161
+  spec:
+    gateways:
+    - kubeflow/kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /dex/
+      route:
+      - destination:
+          host: dex.auth.svc.cluster.local
+          port:
+            number: 5556
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app":"centraldashboard","app.kubernetes.io/component":"centraldashboard","app.kubernetes.io/name":"centraldashboard","kustomize.component":"centraldashboard"},"name":"centraldashboard","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/"}}],"rewrite":{"uri":"/"},"route":[{"destination":{"host":"centraldashboard.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:25Z"
+    generation: 3
+    labels:
+      app: centraldashboard
+      app.kubernetes.io/component: centraldashboard
+      app.kubernetes.io/name: centraldashboard
+      kustomize.component: centraldashboard
+    name: centraldashboard
+    namespace: kubeflow
+    resourceVersion: "16292631"
+    uid: 2710f1be-baa2-4a7d-a973-c01f86a4fe74
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: centraldashboard.kubeflow.svc.cluster.local
+          port:
+            number: 80
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app":"jupyter-web-app","kustomize.component":"jupyter-web-app"},"name":"jupyter-web-app-jupyter-web-app","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"headers":{"request":{"add":{"x-forwarded-prefix":"/jupyter"}}},"match":[{"uri":{"prefix":"/jupyter/"}}],"rewrite":{"uri":"/"},"route":[{"destination":{"host":"jupyter-web-app-service.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:25Z"
+    generation: 1
+    labels:
+      app: jupyter-web-app
+      kustomize.component: jupyter-web-app
+    name: jupyter-web-app-jupyter-web-app
+    namespace: kubeflow
+    resourceVersion: "57739"
+    uid: 66b1f152-afbd-4a5e-adfa-a25f6e94c02f
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - headers:
+        request:
+          add:
+            x-forwarded-prefix: /jupyter
+      match:
+      - uri:
+          prefix: /jupyter/
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: jupyter-web-app-service.kubeflow.svc.cluster.local
+          port:
+            number: 80
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"name":"katib-ui","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/katib/"}}],"rewrite":{"uri":"/katib/"},"route":[{"destination":{"host":"katib-ui.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    name: katib-ui
+    namespace: kubeflow
+    resourceVersion: "57743"
+    uid: b8e1a0d4-0d89-425b-9988-da4306ae71c4
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /katib/
+      rewrite:
+        uri: /katib/
+      route:
+      - destination:
+          host: katib-ui.kubeflow.svc.cluster.local
+          port:
+            number: 80
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1beta1","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app":"kserve","app.kubernetes.io/component":"kserve-models-web-app","app.kubernetes.io/name":"kserve","kustomize.component":"kserve-models-web-app"},"name":"kserve-models-web-app","namespace":"kubeflow"},"spec":{"gateways":["kubeflow/kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/kserve-endpoints/"}}],"rewrite":{"uri":"/"},"route":[{"destination":{"host":"kserve-models-web-app.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      app: kserve
+      app.kubernetes.io/component: kserve-models-web-app
+      app.kubernetes.io/name: kserve
+      kustomize.component: kserve-models-web-app
+    name: kserve-models-web-app
+    namespace: kubeflow
+    resourceVersion: "57757"
+    uid: e5ec9cfa-7615-4d7a-b809-1d68ec9072c0
+  spec:
+    gateways:
+    - kubeflow/kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /kserve-endpoints/
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: kserve-models-web-app.kubeflow.svc.cluster.local
+          port:
+            number: 80
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"application-crd-id":"kubeflow-pipelines"},"name":"metadata-grpc","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/ml_metadata"}}],"rewrite":{"uri":"/ml_metadata"},"route":[{"destination":{"host":"metadata-envoy-service.kubeflow.svc.cluster.local","port":{"number":9090}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      application-crd-id: kubeflow-pipelines
+    name: metadata-grpc
+    namespace: kubeflow
+    resourceVersion: "57746"
+    uid: d056e3c1-b99a-49ab-a139-7b23a814772e
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /ml_metadata
+      rewrite:
+        uri: /ml_metadata
+      route:
+      - destination:
+          host: metadata-envoy-service.kubeflow.svc.cluster.local
+          port:
+            number: 9090
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"ml-pipeline","app.kubernetes.io/name":"kubeflow-pipelines","application-crd-id":"kubeflow-pipelines"},"name":"ml-pipeline-ui","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"match":[{"uri":{"prefix":"/pipeline"}}],"rewrite":{"uri":"/pipeline"},"route":[{"destination":{"host":"ml-pipeline-ui.kubeflow.svc.cluster.local","port":{"number":80}}}],"timeout":"300s"}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: ml-pipeline
+      app.kubernetes.io/name: kubeflow-pipelines
+      application-crd-id: kubeflow-pipelines
+    name: ml-pipeline-ui
+    namespace: kubeflow
+    resourceVersion: "57747"
+    uid: be76ed7f-1a6c-41a7-bb94-3fbaa35c2d34
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - match:
+      - uri:
+          prefix: /pipeline
+      rewrite:
+        uri: /pipeline
+      route:
+      - destination:
+          host: ml-pipeline-ui.kubeflow.svc.cluster.local
+          port:
+            number: 80
+      timeout: 300s
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"kustomize.component":"profiles"},"name":"profiles-kfam","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"headers":{"request":{"add":{"x-forwarded-prefix":"/kfam"}}},"match":[{"uri":{"prefix":"/kfam/"}}],"rewrite":{"uri":"/kfam/"},"route":[{"destination":{"host":"profiles-kfam.kubeflow.svc.cluster.local","port":{"number":8081}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      kustomize.component: profiles
+    name: profiles-kfam
+    namespace: kubeflow
+    resourceVersion: "57749"
+    uid: f931e044-1e9d-4e87-8ad1-93d5168dabf6
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - headers:
+        request:
+          add:
+            x-forwarded-prefix: /kfam
+      match:
+      - uri:
+          prefix: /kfam/
+      rewrite:
+        uri: /kfam/
+      route:
+      - destination:
+          host: profiles-kfam.kubeflow.svc.cluster.local
+          port:
+            number: 8081
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app":"tensorboards-web-app","kustomize.component":"tensorboards-web-app"},"name":"tensorboards-web-app-tensorboards-web-app","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"headers":{"request":{"add":{"x-forwarded-prefix":"/tensorboards"}}},"match":[{"uri":{"prefix":"/tensorboards/"}}],"rewrite":{"uri":"/"},"route":[{"destination":{"host":"tensorboards-web-app-service.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      app: tensorboards-web-app
+      kustomize.component: tensorboards-web-app
+    name: tensorboards-web-app-tensorboards-web-app
+    namespace: kubeflow
+    resourceVersion: "57753"
+    uid: 58bcb5c5-bedb-4343-b988-57e157275266
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - headers:
+        request:
+          add:
+            x-forwarded-prefix: /tensorboards
+      match:
+      - uri:
+          prefix: /tensorboards/
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: tensorboards-web-app-service.kubeflow.svc.cluster.local
+          port:
+            number: 80
+- apiVersion: networking.istio.io/v1beta1
+  kind: VirtualService
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app":"volumes-web-app","kustomize.component":"volumes-web-app"},"name":"volumes-web-app-volumes-web-app","namespace":"kubeflow"},"spec":{"gateways":["kubeflow-gateway"],"hosts":["*"],"http":[{"headers":{"request":{"add":{"x-forwarded-prefix":"/volumes"}}},"match":[{"uri":{"prefix":"/volumes/"}}],"rewrite":{"uri":"/"},"route":[{"destination":{"host":"volumes-web-app-service.kubeflow.svc.cluster.local","port":{"number":80}}}]}]}}
+    creationTimestamp: "2024-05-11T00:20:26Z"
+    generation: 1
+    labels:
+      app: volumes-web-app
+      kustomize.component: volumes-web-app
+    name: volumes-web-app-volumes-web-app
+    namespace: kubeflow
+    resourceVersion: "57755"
+    uid: 900e547b-edd2-447f-bb2c-eb3cb056f0cb
+  spec:
+    gateways:
+    - kubeflow-gateway
+    hosts:
+    - '*'
+    http:
+    - headers:
+        request:
+          add:
+            x-forwarded-prefix: /volumes
+      match:
+      - uri:
+          prefix: /volumes/
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: volumes-web-app-service.kubeflow.svc.cluster.local
+          port:
+            number: 80
+kind: List
+metadata:
+  resourceVersion: ""
