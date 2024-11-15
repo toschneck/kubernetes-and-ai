@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echoserver
+---
+apiVersion: apps.kubermatic.k8c.io/v1
+kind: ApplicationInstallation
+metadata:
+  name: echoserver
+  namespace: echoserver
+spec:
+  applicationRef:
+    name: echoserver
+    version: 0.7.0
+  namespace:
+    create: true
+    name: echoserver
+  reconciliationInterval: 0s
+  valuesBlock: |-
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        kubernetes.io/tls-acme: 'true'
+      enabled: true
+      hosts:
+        - host: echo.tobi-ai.lab.kubermatic.io
+          paths:
+            - /
+      ingressClassName: nginx
+      tls:
+        - hosts:
+            - echo.tobi-ai.lab.kubermatic.io
+          secretName: echoserver-tls

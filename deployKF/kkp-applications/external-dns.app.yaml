@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: external-dns
+---
+apiVersion: apps.kubermatic.k8c.io/v1
+kind: ApplicationInstallation
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  applicationRef:
+    name: external-dns
+    version: 1.15.0
+  namespace:
+    create: true
+    name: external-dns
+  reconciliationInterval: 0s
+  valuesBlock: |-
+    provider: aws
+    triggerLoopOnEvent: true
+    env:
+      - name: AWS_DEFAULT_REGION
+        value: eu-central-1
+      - name: AWS_SHARED_CREDENTIALS_FILE
+        value: /.aws/credentials
+    secretConfiguration:
+      enabled: true
+      mountPath: /.aws
+      data:
+        credentials: |-
+          [default]
+          aws_access_key_id: ____TODO_USE_YOURS___
+          aws_secret_access_key: ____TODO_USE_YOURS___
+    domainFilters:
+      - lab.kubermatic.io

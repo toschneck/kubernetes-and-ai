@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+---
+apiVersion: apps.kubermatic.k8c.io/v1
+kind: ApplicationInstallation
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  applicationRef:
+    name: cert-manager
+    version: v1.14.1
+  namespace:
+    create: true
+    name: cert-manager
+  reconciliationInterval: 0s
+  valuesBlock: |
+    installCRDs: true
