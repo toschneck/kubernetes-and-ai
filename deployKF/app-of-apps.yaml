@@ -131,7 +131,10 @@ spec:
                     ##  - a user with password defined as a plaintext value
                     - email: "admin@kubermatic.com"
                       password:
-                        value: "password"
+                        value: "qjjZTrRoaqFFZ3"
+                    - email: "tobi-ai-demo@kubermatic.com"
+                      password:
+                        value: "3AzdEqcQZ4DcZV"
                   #### CUSTOM TOBI: END #########
             
                   ## dex static passwords

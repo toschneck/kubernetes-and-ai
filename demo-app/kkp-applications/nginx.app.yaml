@@ -23,3 +23,6 @@ spec:
         annotations:
           # Required for Istio
           service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      config:
+        # Increased body size to handle large files like minio
+        proxy-body-size: "0"

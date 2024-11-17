@@ -1,0 +1,83 @@
+apiVersion: cluster.k8s.io/v1alpha1
+kind: MachineDeployment
+metadata:
+  annotations:
+    cluster.k8s.io/cluster-api-autoscaler-node-group-max-size: "2"
+    cluster.k8s.io/cluster-api-autoscaler-node-group-min-size: "0"
+    k8c.io/operating-system-profile: osp-ubuntu
+  name: gpu
+  namespace: kube-system
+spec:
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      machine: md-gpu-pool
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        machine: md-gpu-pool
+    spec:
+      metadata:
+        creationTimestamp: null
+        labels:
+          type: gpu
+          machine: md-gpu-pool
+      providerSpec:
+        value:
+          caPublicKey: ""
+          cloudProvider: aws
+          cloudProviderSpec:
+            accessKeyId: ""
+            # https://aws.amazon.com/marketplace/server/configuration?productId=676eed8d-dcf5-4784-87d7-0de463205c17&ref_=psb_cfg_continue
+            # NVIDIA GPU-Optimized AMI
+            ami: "ami-06c2f7dc39625652a"
+            assignPublicIP: true
+            assumeRoleARN: ""
+            assumeRoleExternalID: ""
+            availabilityZone: eu-central-1b
+            diskSize: 250
+            diskType: gp3
+            ebsVolumeEncrypted: false
+            instanceProfile: kubernetes-i4j5wxwn4r
+            # https://aws.amazon.com/marketplace/pp/prodview-7ikjtg3um26wq
+            #instanceType: g3s.xlarge
+            instanceType: g4dn.xlarge
+            #https://cloudprice.net/aws/ec2?region=eu-central-1&sortField=GPUCount&sortOrder=true&columns=InstanceType%2CInstanceFamily%2CProcessorVCPUCount%2CMemorySizeInMB%2CProcessorArchitecture%2CHasGPU%2CPricePerHour%2CGPUCount%2C__AlternativeInstances%2C__SavingsOptions%2CBestOnDemandHourPriceDiff
+            isSpotInstance: false
+            region: eu-central-1
+            secretAccessKey: ""
+            securityGroupIDs:
+              - sg-0b532ce62c23c2430
+#            spotInstanceConfig:
+#              interruptionBehavior: ""
+#              maxPrice: "2"
+#              persistentRequest: true
+            subnetId: subnet-0541a13d0cb8870d7
+            vpcId: vpc-01c49dc069e4b0131
+          network:
+            cidr: ""
+            dns:
+              servers: null
+            gateway: ""
+            ipFamily: IPv4
+          operatingSystem: ubuntu
+          operatingSystemSpec:
+            distUpgradeOnBoot: false
+          sshPublicKeys:
+          - |
+            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCloj8OvReuuOXtECaMo1iZD8q8newJ9hWZSxIiwOG2406uOueYOxBleb85Jl231YWWjocj6fqExvZBzsQQlrad4fy6oDL5sKZyngtkCZnWcq1DsWn8Sgas9lw2+KS67EXO/P5SHhJSOrqyU6ciktX0WViPvVqb6DnK3RepFh6Xnyl0Q/0RnpSCTomyKK2PfNsv8e80AnfxA1CtnRfeexgwiKtQUPzkEdCG1ABcdZZru3m0y7y1qR0MdYYZIK+bycacngvJCJyp8gnIXHU8dDZanHL2WGOcCpd/gjwM6iryr6IhlCZXw++PRGK1aErtvKDH7oaAMLW8qFK4+bpMdeytd4Viw/g3SH3Q7ows2xl6NTaU2F0PTXD+qAY2xna1eemet1txl1oP6KQJ2Rqc5rNU3/auhdK4PaU22D8Z2XF7gOrsoQB7dqW0BBDHg/ftVNb9BgOHGkYvxSsCavcqX3joUyFjHzhv+sD1WiOPvfRqV4fQ8h47ERvD3QXuBn+5YKeKp/0sjSCypIdK02FAFa2NxN2tEoh7wdCBX9enFU3UT7jfeW5Pf98Z6ao9hiAF80J5FIM21sMG3E3dAMb2tr8Gc8jM5QdWO4rJkG9j5v2d1umLkSxm7pN4Mxw/AE02jYNEblm9i/Pbzg8wqa9gw2gubO7A8qoKVtA1xlOnDVB+0Q== tobi@loodse.com
+      taints:
+      - effect: NoSchedule
+        key: workload
+        value: gpu
+      versions:
+        kubelet: 1.29.9

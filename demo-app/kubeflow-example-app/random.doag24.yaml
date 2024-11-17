@@ -1,0 +1,96 @@
+---
+apiVersion: kubeflow.org/v1beta1
+kind: Experiment
+metadata:
+  #namespace: kubeflow
+  #namespace: kubeflow-user-example-com
+  namespace: team-1
+  name: doag24-test-random-demo-2024
+spec:
+  objective:
+    type: minimize
+    goal: 0.001
+    objectiveMetricName: loss
+  algorithm:
+    algorithmName: random
+  parallelTrialCount: 3
+  maxTrialCount: 3
+  maxFailedTrialCount: 3
+  parameters:
+    - name: lr
+      parameterType: double
+      feasibleSpace:
+        min: "0.01"
+        max: "0.05"
+    - name: momentum
+      parameterType: double
+      feasibleSpace:
+        min: "0.5"
+        max: "0.9"
+  trialTemplate:
+    primaryContainerName: training-container
+    trialParameters:
+      - name: learningRate
+        description: Learning rate for the training model
+        reference: lr
+      - name: momentum
+        description: Momentum for the training model
+        reference: momentum
+    trialSpec:
+      apiVersion: batch/v1
+      kind: Job
+      spec:
+        template:
+          metadata:
+            annotations:
+              "sidecar.istio.io/inject": "false"
+          spec:
+            nodeSelector:
+              type: gpu
+            tolerations:
+              - key: workload
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+            containers:
+              - name: training-container
+                image: docker.io/kubeflowkatib/pytorch-mnist-cpu:latest
+                command:
+                  - "python3"
+                  - "/opt/pytorch-mnist/mnist.py"
+                  - "--epochs=1"
+                  - "--batch-size=16"
+                  - "--lr=${trialParameters.learningRate}"
+                  - "--momentum=${trialParameters.momentum}"
+                resources:
+                  limits:
+                    memory: "1Gi"
+                    cpu: "0.5"
+            restartPolicy: Never
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: "nvidia.com/gpu.product"
+                          operator: Exists
+              podAntiAffinity:
+                #ensure to be on another node as localai to ensure performance of GPU
+                requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/instance
+                        operator: In
+                        values:
+                          - localai
+                  topologyKey: kubernetes.io/hostname
+#                preferredDuringSchedulingIgnoredDuringExecution:
+#                - weight: 100
+#                  podAffinityTerm:
+#                    labelSelector:
+#                        matchExpressions:
+#                        - key: app.kubernetes.io/instance
+#                          operator: In
+#                          values:
+#                          - localai
+#                    topologyKey: kubernetes.io/hostname
