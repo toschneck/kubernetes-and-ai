@@ -4,8 +4,8 @@ kind: Experiment
 metadata:
   #namespace: kubeflow
   #namespace: kubeflow-user-example-com
-  namespace: team-1
-  name: doag24-test-random-demo-2024
+  namespace: team-demo
+  name: doag24-test-random-demo-2024 #TODO ADJUST
 spec:
   objective:
     type: minimize

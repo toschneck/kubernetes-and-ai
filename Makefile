@@ -27,6 +27,10 @@ deployKF-deploy: kkp-applications-deploy
 	kubectl apply -f deployKF/app-of-apps.yaml
 	./deployKF/sync_argocd_apps.sh
 
+############ KUBEFLOW ###########
+kubeflow-example-deploy:
+	kubectl apply -f demo-app/kubeflow-example-app
+	watch kubectl get pod -o wide -n team-demo
 
 ############ LOCALAI #################
 local-ai-deploy:

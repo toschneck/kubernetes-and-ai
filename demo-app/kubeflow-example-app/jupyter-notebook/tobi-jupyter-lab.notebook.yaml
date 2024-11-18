@@ -1,0 +1,41 @@
+apiVersion: kubeflow.org/v1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.kubeflow.org/server-type: jupyter
+  labels:
+    app: tobi-jupyter-lab
+  name: tobi-jupyter-lab
+  namespace: team-demo
+spec:
+  template:
+    spec:
+      containers:
+      - image: kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.8.0
+        imagePullPolicy: IfNotPresent
+        name: tobi-jupyter-lab
+        resources:
+          limits:
+            cpu: "0.6"
+            memory: 1.2Gi
+          requests:
+            cpu: "0.5"
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /home/jovyan/tobi-jupyter-vol
+          name: tobi-jupyter-vol
+        - mountPath: /home/jovyan
+          name: tobi-jupyter-lab-volume
+      serviceAccountName: default-editor
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: dshm
+      - name: tobi-jupyter-vol
+        persistentVolumeClaim:
+          claimName: tobi-jupyter-vol
+      - name: tobi-jupyter-lab-volume
+        persistentVolumeClaim:
+          claimName: tobi-jupyter-lab-volume
