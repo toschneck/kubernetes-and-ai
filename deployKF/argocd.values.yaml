@@ -1,6 +1,6 @@
 server:
   certificate:
-    domain: argocd.tobi-ai.lab.kubermatic.io
+    domain: argo-cd.tobi-ai.lab.kubermatic.io
     enabled: true
     issuer:
       group: cert-manager.io
@@ -13,7 +13,7 @@ server:
       kubernetes.io/tls-acme: 'true'
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     enabled: true
-    hostname: argocd.tobi-ai.lab.kubermatic.io
+    hostname: argo-cd.tobi-ai.lab.kubermatic.io
     ingressClassName: nginx
     tls: true
 

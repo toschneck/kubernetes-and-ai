@@ -1,4 +1,7 @@
 
+KUBECONFIG ?= demo-app/.env/kubeconfig-ai-lab-cluster
+export KUBECONFIG
+
 ############ KKP / K8s #################
 kkp-md-apply:
 	kubectl apply -f demo-app/kkp-usercluster-machindeployment-ref
