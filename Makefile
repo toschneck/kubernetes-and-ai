@@ -33,7 +33,12 @@ deployKF-deploy: kkp-applications-deploy
 ############ KUBEFLOW ###########
 kubeflow-example-deploy:
 	kubectl apply -f demo-app/kubeflow-example-app
-	watch kubectl get pod -o wide -n team-demo
+	make kubeflow-watch-team-demo
+
+kubeflow-watch-team-demo:
+	watch kubectl get experiment,trial,pod -o wide -n team-demo
+	watch kubectl get all -n team-demo -o wide
+
 
 ############ LOCALAI #################
 local-ai-deploy:
